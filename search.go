@@ -9,7 +9,6 @@ import (
 	"strings"
 )
 
-
 // 搜索模式(忽略模式)
 //   0 ： 默认
 //   1 ： 包含
@@ -124,6 +123,11 @@ func Search(option SearchOption) (result SearchResult) {
 	option.RootPath = RemoveEmpty(option.RootPath)
 	option.FileNamePart = RemoveEmpty(option.FileNamePart)
 	option.IgnoreFileNamePart = RemoveEmpty(option.IgnoreFileNamePart)
+
+	// 默认搜索模式设为 包含
+	if option.Pattern == "" || option.Pattern == PatternDefault {
+		option.Pattern = PatternInclude
+	}
 
 	// 多个目录搜索
 	for _, p := range option.RootPath {
@@ -353,7 +357,6 @@ func searchRecursive(result *SearchResult, path string, option *SearchOption) {
 		}
 	}
 }
-
 
 // 快捷搜索
 // 搜索多个目录下的指定文件类型, 返回文件全路径切片
