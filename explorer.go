@@ -66,6 +66,8 @@ func Explorer(option ExplorerOption) (tree TreeNode) {
 
 		// 目录路径
 		child.Path = p
+		// 默认传过来的值是目录
+		child.IsDir = true
 
 		// 遍历
 		explorerRecursive(&child, &option)
