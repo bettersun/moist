@@ -114,6 +114,8 @@ func ToIfKeyMap(m map[string]interface{}) (result map[interface{}]interface{}, e
 
 						valSlice = append(valSlice, ifKeyMap)
 					}
+				} else { // 非Map类型（认为是普通类型）
+					valSlice = append(valSlice, subVal)
 				}
 			}
 
@@ -147,13 +149,16 @@ func ToIfKeyMap(m map[string]interface{}) (result map[interface{}]interface{}, e
 
 // 将struct转化为interface{}类型Key的Map
 // 》interface{}类型Key的Map用于go-flutter插件
-func StrctToIfKeyMap(s interface{}) (result map[interface{}]interface{}, err error) {
+func StructToIfKeyMap(s interface{}) (result map[interface{}]interface{}, err error) {
 	// 先转换成string类型Key的Map
 	m, err := StrctToMap(s)
 	if err != nil {
 		log.Print("Error occurs when convert struct to map with interface key. function: StrctToIfKeyMap() -> StrctToMap()")
 		return result, err
 	}
+
+	log.Println("Map")
+	log.Println(m)
 
 	// 再转换成interface类型Key的Map
 	result, err = ToIfKeyMap(m)

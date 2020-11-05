@@ -1,7 +1,7 @@
 package moist
 
 import (
-	"fmt"
+	"log"
 	"testing"
 )
 
@@ -39,7 +39,7 @@ import (
 // 	option.ShowDetail = true
 
 // 	result := SearchFile(option)
-// 	//	fmt.Println(result)
+// 	//	log.Println(result)
 
 // 	OutFile("./search_result.txt", result)
 // }
@@ -49,14 +49,14 @@ import (
 // 	path := []string{"E:/BS", "E:/Test"}
 // 	fileType := []string{".xlsx", ".xlsm"}
 // 	result := SearchByType(path, fileType, nil)
-// 	fmt.Println(result)
+// 	log.Println(result)
 // }
 
 // func TestSearch_03(t *testing.T) {
 
 // 	path := []string{"E:/BS", "E:/Test"}
 // 	result := SearchXlsx(path, nil)
-// 	fmt.Println(result)
+// 	log.Println(result)
 // }
 
 func TestSearch_04(t *testing.T) {
@@ -72,8 +72,17 @@ func TestSearch_04(t *testing.T) {
 	// option.IgnoreFileNamePart = []string{``}
 	// option.IgnorePattern = ignorePattern
 	// option.IgnoreType = igFType
+	option.ShowDetail = true
 
 	result := Search(option)
-	fmt.Println(result)
-	OutFile("./search_result.txt", result)
+	log.Println(result)
+
+	// 转换成Map(Key类型为interface{})
+	m, err := StructToIfKeyMap(result)
+	if err != nil {
+		log.Println(err)
+	}
+
+	log.Println(m)
+	// OutFile("./search_result.txt", result)
 }
