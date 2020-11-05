@@ -157,9 +157,6 @@ func StructToIfKeyMap(s interface{}) (result map[interface{}]interface{}, err er
 		return result, err
 	}
 
-	log.Println("Map")
-	log.Println(m)
-
 	// 再转换成interface类型Key的Map
 	result, err = ToIfKeyMap(m)
 	if err != nil {
