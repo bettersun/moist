@@ -32,7 +32,7 @@ func TestExplorer(t *testing.T) {
 
 	result := Explorer(option)
 
-	m, err := StrctToIfKeyMap(result)
+	m, err := StructToIfKeyMap(result)
 	if err != nil {
 		log.Println(err)
 	}
