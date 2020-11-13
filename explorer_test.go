@@ -38,5 +38,5 @@ func TestExplorer(t *testing.T) {
 	}
 	log.Println(m)
 
-	OutFile("./explorer_tree.txt", result)
+	OutJson("./explorer_tree.txt", result)
 }

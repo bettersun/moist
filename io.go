@@ -194,8 +194,8 @@ func OutTerminal(obj interface{}) {
 	out.WriteTo(os.Stdout)
 }
 
-// 输出到文件
-func OutFile(filename string, obj interface{}) error {
+// 输出到Json文件
+func OutJson(filename string, obj interface{}) error {
 	// HTML转义的处理 START
 	// b, err := json.Marshal(obj)
 	// if err != nil {
@@ -339,4 +339,3 @@ func CopyOne(src string, dst string) error {
 
 	return nil
 }
-

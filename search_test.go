@@ -41,7 +41,7 @@ import (
 // 	result := SearchFile(option)
 // 	//	log.Println(result)
 
-// 	OutFile("./search_result.txt", result)
+// 	OutJson("./search_result.txt", result)
 // }
 
 // func TestSearch_02(t *testing.T) {
@@ -84,5 +84,5 @@ func TestSearch_04(t *testing.T) {
 	}
 
 	log.Println(m)
-	// OutFile("./search_result.txt", result)
+	// OutJson("./search_result.txt", result)
 }
