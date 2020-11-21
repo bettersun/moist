@@ -4,38 +4,66 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
-	"os"
-	"strconv"
+
 	"strings"
 )
 
+// 全局变量： 配置
+var config ProxyConfig
+
+// 全局变量： 代理的URL信息
+var urlInfo []ProxyUrlInfo
+
+// 全局变量： 不使用代理的URL信息
+var urlNoProxy []ProxyUrlInfo
+
 func main() {
-	HttpProxy("/", 8080)
-}
 
-// 目标Host
-func TargetHost() string {
-	return "http://localhost:8002"
-}
+	var err error
 
-// 转发请求
-// 参考：https://www.cnblogs.com/boxker/p/11046342.html
-func HttpProxy(pattern string, port int) {
-	http.HandleFunc(pattern, doProxy)
-	strPort := strconv.Itoa(port)
-	fmt.Print("listenning on :", " ", pattern, " ", strPort, "\n")
-	err := http.ListenAndServe(":"+strPort, nil)
+	// 加载配置
+	config, err = LoadConfig(configFile)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Print(err)
 	}
+	// log.Println(config)
+
+	// 读取¥代理的URL信息
+	urlInfo, err = LoadUrlInfo(urlFile)
+	if err != nil {
+		log.Print(err)
+	}
+	// log.Println(urlInfo)
+
+	for _, v := range urlInfo {
+		if !v.UseProxy {
+			// 不使用代理的URL信息
+			urlNoProxy = append(urlNoProxy, v)
+		}
+	}
+
+	// 响应函数
+	for _, v := range urlInfo {
+		if v.UseProxy {
+			// 使用代理
+			http.HandleFunc(v.Url, doProxy)
+		} else {
+			// 不使用代理
+			http.HandleFunc(v.Url, doHandle)
+		}
+	}
+
+	// 监听
+	port := ":" + config.ProxyPort
+	log.Printf("Listen and serve [%v]", port)
+	http.ListenAndServe(port, nil)
 }
 
-// 转发请求
+// 转发请求函数
 // 参考：https://www.cnblogs.com/boxker/p/11046342.html
 func doProxy(w http.ResponseWriter, r *http.Request) {
-
 	fmt.Println("url: ", r.URL)
 
 	// 创建一个HttpClient用于转发请求
@@ -48,7 +76,7 @@ func doProxy(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 转发的URL
-	reqUrl := TargetHost() + r.URL.String()
+	reqUrl := config.TargetHost + r.URL.String()
 
 	// 创建转发用的请求
 	req, err := http.NewRequest(r.Method, reqUrl, strings.NewReader(string(body)))

@@ -13,6 +13,7 @@ func main() {
 
 	http.HandleFunc("/", home)
 	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/goodbye", goodbye)
 
 	log.Println("ListenAndServe")
 	server.ListenAndServe()
@@ -24,4 +25,8 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello, world.")
+}
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Goodbye, world.")
 }

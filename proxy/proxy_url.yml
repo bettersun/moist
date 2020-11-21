@@ -1,0 +1,12 @@
+-
+ useProxy: true
+ url: /hello
+ responseJson: /json/hello.json
+-
+ useProxy: false
+ url: /goodbye
+ responseJson: /json/goodbye.json
+-
+ useProxy: true
+ url: /
+ responseJson: /json/welcome.json
