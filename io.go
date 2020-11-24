@@ -317,8 +317,7 @@ func ReadFile(filename string) (string, error) {
 }
 
 // 单文件复制
-func CopyOne(src string, dst string) error {
-
+func CopyFile(src string, dst string) error {
 	p := FilePath(dst, S_SLASH)
 
 	//递归创建文件夹

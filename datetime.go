@@ -1,7 +1,7 @@
 package moist
 
 import (
-"time"
+	"time"
 )
 
 // 现在日期（现在时刻）
@@ -13,19 +13,19 @@ func Now(format string) string {
 	return time.Now().Format(format)
 }
 
-func NowYmdHms(format string) string {
+func NowYmdHms() string {
 
 	//
 	return time.Now().Format(DateTimeFormatYmdHms)
 }
 
-func NowYmdHmsHyphen(format string) string {
+func NowYmdHmsHyphen() string {
 
 	//
 	return time.Now().Format(DateTimeFormatYmdHmsHyphen)
 }
 
-func NowYmdHmsSlash(format string) string {
+func NowYmdHmsSlash() string {
 
 	//
 	return time.Now().Format(DateTimeFormatYmdHmsSlash)
@@ -48,4 +48,3 @@ func TodayYmdSlash() string {
 	//
 	return time.Now().Format(DateFormatYmdSlash)
 }
-
