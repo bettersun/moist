@@ -1,4 +1,4 @@
-package main
+package proxy
 
 import (
 	"io/ioutil"
@@ -9,19 +9,22 @@ import (
 
 // 配置
 type ProxyConfig struct {
-	ProxyPort  string `yaml:"proxyPort"`
-	TargetHost string `yaml:"targetHost"`
+	ProxyPort string `yaml:"proxyPort"`
 }
 
-// 代理的URL信息
-type ProxyUrlInfo struct {
+// 代理信息
+type ProxyInfo struct {
+	TargetHost string     `yaml:"targetHost"`
+	BaseUrl    string     `yaml:"baseUrl"`
+	ProxyUrls  []ProxyUrl `yaml:"proxyUrls"`
+}
+
+// 代理URL
+type ProxyUrl struct {
 	Url          string `yaml:"url"`
 	UseProxy     bool   `yaml:"useProxy"`
 	ResponseJson string `yaml:"responseJson"`
 }
-
-const configFile = "proxy_config.yml"
-const urlFile = "proxy_url.yml"
 
 /// 读取配置
 func LoadConfig(file string) (ProxyConfig, error) {
@@ -45,22 +48,22 @@ func LoadConfig(file string) (ProxyConfig, error) {
 }
 
 /// 读取URL信息
-func LoadUrlInfo(file string) ([]ProxyUrlInfo, error) {
+func LoadProxyInfo(file string) (ProxyInfo, error) {
 
-	var urlInfo []ProxyUrlInfo
+	var info ProxyInfo
 
 	// 读取文件
 	b, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Print(err)
-		return urlInfo, err
+		return info, err
 	}
 
 	// 转换成Struct
-	err = yaml.Unmarshal(b, &urlInfo)
+	err = yaml.Unmarshal(b, &info)
 	if err != nil {
 		log.Printf("Get the setting error! %v\n", err.Error())
 	}
 
-	return urlInfo, nil
+	return info, nil
 }

@@ -14,6 +14,8 @@ func main() {
 	http.HandleFunc("/", home)
 	http.HandleFunc("/hello", hello)
 	http.HandleFunc("/goodbye", goodbye)
+	http.HandleFunc("/bettersun/hello", helloBS)
+	http.HandleFunc("/bettersun/goodbye", goodbyeBS)
 
 	log.Println("ListenAndServe")
 	server.ListenAndServe()
@@ -27,6 +29,14 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello, world.")
 }
 
-func hello(w http.ResponseWriter, r *http.Request) {
+func goodbye(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Goodbye, world.")
+}
+
+func helloBS(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, bettersun.")
+}
+
+func goodbyeBS(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Goodbye, bettersun.")
 }

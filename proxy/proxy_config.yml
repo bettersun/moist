@@ -1,2 +1,0 @@
-proxyPort: 8080
-targetHost: http://localhost:8002
