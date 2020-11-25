@@ -167,6 +167,29 @@ func StructToIfKeyMap(s interface{}) (result map[interface{}]interface{}, err er
 	return result, nil
 }
 
+/// JSON文件转struct
+///  file: json文件
+///  s   : 定义的struct的地址(调用处需要加&)
+///
+/// 使用例：参照README.md
+func JsonFileToStruct(file string, s interface{}) (interface{}, error) {
+
+	// 读取文件
+	b, err := ioutil.ReadFile(file)
+	if err != nil {
+		log.Print(err)
+		return s, err
+	}
+
+	// 转换成Struct
+	err = json.Unmarshal(b, s)
+	if err != nil {
+		log.Printf("Get the setting error! %v\n", err.Error())
+	}
+
+	return s, nil
+}
+
 // func ToMap(tests []interface) {
 
 // 	l := make([]map[string]interface{}, 0)

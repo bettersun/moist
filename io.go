@@ -195,7 +195,7 @@ func OutTerminal(obj interface{}) {
 }
 
 // 输出到Json文件
-func OutJson(filename string, obj interface{}) error {
+func OutJson(file string, obj interface{}) error {
 	// HTML转义的处理 START
 	// b, err := json.Marshal(obj)
 	// if err != nil {
@@ -213,7 +213,7 @@ func OutJson(filename string, obj interface{}) error {
 	jsonEncoder.SetIndent(S_EMPTY, S_INDENT)
 	jsonEncoder.Encode(obj)
 
-	err := ioutil.WriteFile(filename, bf.Bytes(), os.ModePerm) // 覆盖所有Unix权限位（用于通过&获取类型位）
+	err := ioutil.WriteFile(file, bf.Bytes(), os.ModePerm) // 覆盖所有Unix权限位（用于通过&获取类型位）
 	if err != nil {
 		log.Println(err)
 	}
@@ -257,7 +257,7 @@ func CreateTree(rootPath string, file []string, isCreateFile bool) error {
 		//递归创建文件夹
 		err := os.MkdirAll(p, os.ModePerm)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			continue
 		}
 
@@ -267,7 +267,7 @@ func CreateTree(rootPath string, file []string, isCreateFile bool) error {
 			// 创建文件
 			_, err = os.Create(s)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 			}
 
 		}
@@ -297,7 +297,7 @@ func CreateTree(rootPath string, file []string, isCreateFile bool) error {
 // 		//递归创建文件夹
 // 		err := os.MkdirAll(p, os.ModePerm)
 // 		if err != nil {
-// 			fmt.Println(err)
+// 			log.Println(err)
 // 			continue
 // 		}
 // 	}
@@ -323,14 +323,14 @@ func CopyFile(src string, dst string) error {
 	//递归创建文件夹
 	err := os.MkdirAll(p, os.ModePerm)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return err
 	}
 
 	// 创建文件
 	_, err = os.Create(dst)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return err
 	}
 
