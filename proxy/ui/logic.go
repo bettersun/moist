@@ -4,13 +4,13 @@ import (
 	"github.com/bettersun/moist/proxy"
 )
 
-func runServer() {
+func RunServer() {
 
 	// 加载配置
 	proxy.RunServer()
 }
 
-func reload() {
+func Reload() {
 
 	var proxyInfo proxy.ProxyInfo
 
@@ -36,7 +36,7 @@ func reload() {
 	proxy.Reload(proxyInfo)
 }
 
-func closeServer() {
+func CloseServer() {
 
 	// 加载配置
 	proxy.CloseServer()

@@ -15,7 +15,6 @@ type ProxyConfig struct {
 // 代理信息
 type ProxyInfo struct {
 	TargetHost string     `yaml:"targetHost"`
-	BaseUrl    string     `yaml:"baseUrl"`
 	ProxyUrls  []ProxyUrl `yaml:"proxyUrls"`
 }
 

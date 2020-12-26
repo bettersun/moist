@@ -64,11 +64,11 @@ func makeEntry() fyne.CanvasObject {
 // 按钮
 func makeButton() fyne.CanvasObject {
 
-	btn1 := widget.NewButton("Run Server", runServer)
+	btn1 := widget.NewButton("Run Server", RunServer)
 
-	btn2 := widget.NewButton("Reload", reload)
+	btn2 := widget.NewButton("Reload", Reload)
 
-	btn3 := widget.NewButton("Close Server", closeServer)
+	btn3 := widget.NewButton("Close Server", CloseServer)
 
 	return container.NewHBox(btn1, btn2, btn3)
 }

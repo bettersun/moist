@@ -1,0 +1,14 @@
+targetHost: http://localhost:8002
+proxyUrls:
+    - url: /hello
+      useProxy: true
+      responseJson: /json/hello.json
+    - url: /goodbye
+      useProxy: false
+      responseJson: /json/goodbye.json
+    - url: /bettersun/hello
+      useProxy: true
+      responseJson: /json/hello.json
+    - url: /bettersun/goodbye
+      useProxy: false
+      responseJson: /json/goodbye.json

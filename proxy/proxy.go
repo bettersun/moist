@@ -23,7 +23,18 @@ var server http.Server
 
 var isRunning bool
 
-// 启动服务
+// 启动服务(命令行调用)
+func RunServerCommand() {
+
+	RunServer()
+
+	// 命令行执行时，需要下面这段代码
+	// 从UI执行时，需要注释掉下面这段代码
+	ch := make(chan string)
+	<-ch
+}
+
+// 启动服务(界面调用)
 func RunServer() {
 
 	var err error
@@ -55,9 +66,7 @@ func RunServer() {
 
 	// 响应函数
 	for _, v := range proxyInfo.ProxyUrls {
-		url := proxyInfo.BaseUrl + v.Url
-		// log.Println(url)
-		http.HandleFunc(url, DoHandle)
+		http.HandleFunc(v.Url, DoHandle)
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -67,7 +76,7 @@ func RunServer() {
 		fmt.Fprintf(w, "Welcome bettersun")
 	})
 
-	// 需要确认端口是否被占用
+	// TODO 需要确认端口是否被占用
 	go server.ListenAndServe()
 	isRunning = true
 	log.Printf("Listen and serve [%v]", port)
@@ -91,12 +100,13 @@ func CloseServer() {
 
 // 请求处理函数
 func DoHandle(w http.ResponseWriter, r *http.Request) {
+	// 输出请求到文件
+	OutRequest(r)
 
 	for _, v := range proxyInfo.ProxyUrls {
-		url := proxyInfo.BaseUrl + v.Url
-		// log.Printf("URL : %v\n", url)
+		// log.Printf("URL : %v\n", v.Url)
 		// log.Printf("Request URL : %v\n", r.URL.String())
-		if url == r.URL.String() {
+		if v.Url == r.URL.String() {
 
 			if v.UseProxy {
 				doProxy(w, r, &proxyInfo)
@@ -150,6 +160,9 @@ func doProxy(w http.ResponseWriter, r *http.Request, p *ProxyInfo) {
 		w.Header().Set(k, v[0])
 	}
 
+	// 输出响应体到文件
+	OutResponse(r, res)
+
 	// 复制转发的响应Body到响应Body
 	io.Copy(w, res.Body)
 }
@@ -188,4 +201,54 @@ func doHandle(w http.ResponseWriter, r *http.Request, proxyUrl ProxyUrl) {
 
 	w.WriteHeader(200)
 	w.Write(objStream)
+}
+
+// 输出请求到文件
+func OutRequest(r *http.Request) {
+
+	url := r.URL.String()
+	// 输出文件名
+	filename := strings.ReplaceAll(url, "/", "_")
+	filename = "request/" + filename + "_request.json"
+
+	// 读取请求体
+	data, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Print("ioutil.ReadAll() ", err.Error())
+	}
+	body := string(data)
+
+	m := make(map[string]interface{})
+	m["header"] = r.Header
+	m["body"] = body
+
+	// 输出请求到文件
+	err = moist.OutJson(filename, m)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+// 输出响应到文件
+func OutResponse(r *http.Request, res *http.Response) {
+
+	// 输出文件名
+	url := r.URL.String()
+	filename := strings.ReplaceAll(url, "/", "_")
+	filename = "response/" + filename + "_body.json"
+
+	// 读取响应体
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Print("ioutil.ReadAll() ", err.Error())
+	}
+	resBody := string(data)
+
+	// 输出响应体到文件
+	err = moist.OutJson(filename, resBody)
+	if err != nil {
+		log.Print(err)
+	}
+	// // 输出响应头到文件
+	// moist.OutJson("real_response_header.json", res.Header)
 }
