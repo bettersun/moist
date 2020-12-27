@@ -19,17 +19,20 @@ import (
 )
 
 func init() {
+
+	// 加载字体
 	fontPaths := findfont.List()
 	for _, path := range fontPaths {
-		//黑体:simhei.ttf
-		if strings.Contains(path, "simhei.ttf") {
+		// 黑体:simhei.ttf
+		// 宋体:Songti.ttc
+		if strings.Contains(path, "Songti.ttc") {
 			// 设置环境变量
 			os.Setenv("FYNE_FONT", path)
 			break
 		}
 	}
 
-	log.Println("黑体字体已加载")
+	log.Println("字体已加载")
 }
 
 func main() {

@@ -11,6 +11,7 @@ import (
 	"github.com/bettersun/moist"
 )
 
+///
 func SaveProxy(p ProxyInfo) {
 
 	bkFile := fmt.Sprintf("%v/backup/proxy%v.yml", moist.CurrentDir(), moist.NowYmdHms())

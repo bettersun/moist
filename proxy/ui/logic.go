@@ -4,40 +4,42 @@ import (
 	"github.com/bettersun/moist/proxy"
 )
 
+// 加载配置
 func RunServer() {
 
 	// 加载配置
 	proxy.RunServer()
 }
 
+// 重新加载
 func Reload() {
 
 	var proxyInfo proxy.ProxyInfo
 
 	var proxyUrls []proxy.ProxyUrl
-	var proxyUrlInfo proxy.ProxyUrl
+	var proxyUrl proxy.ProxyUrl
 
-	proxyUrlInfo.Url = "/goodbye"
-	proxyUrlInfo.UseProxy = false
-	proxyUrlInfo.ResponseJson = "/json/goodbye.json"
+	proxyUrl.Url = "/goodbye"
+	proxyUrl.UseProxy = false
+	proxyUrl.ResponseJson = "/json/goodbye.json"
 
-	proxyUrls = append(proxyUrls, proxyUrlInfo)
+	proxyUrls = append(proxyUrls, proxyUrl)
 
-	proxyUrlInfo.Url = "/hello"
-	proxyUrlInfo.UseProxy = false
-	proxyUrlInfo.ResponseJson = "/json/hello.json"
+	proxyUrl.Url = "/hello"
+	proxyUrl.UseProxy = false
+	proxyUrl.ResponseJson = "/json/hello.json"
 
-	proxyUrls = append(proxyUrls, proxyUrlInfo)
+	proxyUrls = append(proxyUrls, proxyUrl)
 
 	proxyInfo.TargetHost = "http://localhost:8002"
-	proxyInfo.BaseUrl = "/bettersun"
 	proxyInfo.ProxyUrls = proxyUrls
 
 	proxy.Reload(proxyInfo)
 }
 
+/// 关闭服务
 func CloseServer() {
 
-	// 加载配置
+	// 关闭服务
 	proxy.CloseServer()
 }
