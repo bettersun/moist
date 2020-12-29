@@ -1,9 +1,0 @@
-targetHost: http://localhost:8002
-baseUrl: /bettersun
-proxyUrls:
-    - url: /goodbye
-      useProxy: false
-      responseJson: /json/goodbye.json
-    - url: /hello
-      useProxy: false
-      responseJson: /json/hello.json
