@@ -338,3 +338,23 @@ func CopyFile(src string, dst string) error {
 
 	return nil
 }
+
+/// 获取目录下的所有文件
+func ListFile(path string) []string {
+	var file []string
+
+	sub, err := ioutil.ReadDir(path)
+	if err != nil {
+		log.Println("目录不存在，或打开错误。")
+		return file
+	}
+
+	for _, f := range sub {
+		// 只获取文件
+		if !f.IsDir() {
+			file = append(file, f.Name())
+		}
+	}
+
+	return file
+}
