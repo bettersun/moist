@@ -9,17 +9,21 @@ import (
 )
 
 // 输出到Yaml文件
-func OutYaml(file string, s interface{}) {
+func OutYaml(file string, s interface{}) error {
 	b, err := yaml.Marshal(&s)
 	if err != nil {
-		log.Fatalf("error: %v", err)
+		log.Println(err)
+		return err
 	}
 	// log.Println(b)
 
 	err = ioutil.WriteFile(file, b, os.ModePerm) // 覆盖所有Unix权限位（用于通过&获取类型位）
 	if err != nil {
 		log.Println(err)
+		return err
 	}
+
+	return nil
 }
 
 /// YML文件转struct
