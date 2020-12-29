@@ -12,7 +12,7 @@ type Config struct {
 }
 ```
 
-### JSON转struct
+### YAML转struct
 
 #### YAML文件
 config.yml
