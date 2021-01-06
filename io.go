@@ -230,24 +230,6 @@ func CreateTree(rootPath string, file []string, isCreateFile bool) error {
 
 	for _, s := range file {
 
-		// TODO ../
-		if strings.HasPrefix(s, "../") {
-			s = strings.Replace(s, "../", "/", 1)
-		}
-		if strings.HasPrefix(s, "./") {
-			s = strings.Replace(s, "./", "/", 1)
-		}
-
-		if strings.HasPrefix(s, "///") {
-			s = strings.Replace(s, "///", "", 1)
-		}
-		if strings.HasPrefix(s, "//") {
-			s = strings.Replace(s, "//", "", 1)
-		}
-		if strings.HasPrefix(s, "/") {
-			s = strings.Replace(s, "/", "", 1)
-		}
-
 		if rootPath != "" && !strings.HasSuffix(rootPath, "/") {
 			rootPath = rootPath + "/"
 		}
