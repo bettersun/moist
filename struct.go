@@ -18,14 +18,26 @@ func JsonFileToMap(jsonFile string) (result interface{}, err error) {
 
 	s := string(b)
 
+	// 转换成Map
+	result, err = JsonToMap(s)
+	if err != nil {
+		log.Println("JsonFileToMap: ", err)
+	}
+
+	return result, err
+}
+
+// JSON字符串转换成Map(或Map切片)
+// 返回值为 Map或Map切片
+func JsonToMap(sJson string) (result interface{}, err error) {
+
 	// 尝试转换成单个JSON对象
-	obj, err := JsonToMap(s)
+	obj, err := jsonObjectToMap(sJson)
 	if err != nil {
 		// 尝试转换成JSON数组
-		arr, err2 := JsonArrayToMap(s)
+		arr, err2 := jsonArrayToMap(sJson)
 		if err2 != nil {
-
-			log.Println("JsonFileToMap: ", err2)
+			log.Println("JsonToMap: ", err2)
 			return arr, err2
 		} else {
 			err = nil
@@ -37,17 +49,17 @@ func JsonFileToMap(jsonFile string) (result interface{}, err error) {
 	}
 
 	if err != nil {
-		log.Println("JsonFileToMap: ", err)
+		log.Println("JsonToMap: ", err)
 	}
 
 	return result, err
 }
 
-// JSON字符串转换成Map
-func JsonToMap(sJson string) (result map[string]interface{}, err error) {
+// JSON(对象)字符串转换成Map
+func jsonObjectToMap(sJson string) (result map[string]interface{}, err error) {
 	err = json.Unmarshal([]byte(sJson), &result)
 	if err != nil {
-		log.Println("JsonToMap: ", err)
+		log.Println("jsonObjectToMap: ", err)
 		return result, err
 	}
 
@@ -55,10 +67,10 @@ func JsonToMap(sJson string) (result map[string]interface{}, err error) {
 }
 
 // JSON(数组)字符串转换成Map
-func JsonArrayToMap(sJson string) (result []map[string]interface{}, err error) {
+func jsonArrayToMap(sJson string) (result []map[string]interface{}, err error) {
 	err = json.Unmarshal([]byte(sJson), &result)
 	if err != nil {
-		log.Println("JsonArrayToMap: ", err)
+		log.Println("jsonArrayToMap: ", err)
 		return result, err
 	}
 
@@ -67,16 +79,16 @@ func JsonArrayToMap(sJson string) (result []map[string]interface{}, err error) {
 
 // 将struct转化为map
 // 》使用json
-func StrctToMap(s interface{}) (map[string]interface{}, error) {
+func StructToMap(s interface{}) (map[string]interface{}, error) {
 	m := make(map[string]interface{})
 	j, err := json.Marshal(s)
 	if err != nil {
-		log.Print("Error occurs when convert struct to map. function: StrctToMap() -> json.Marshal()")
+		log.Print("Error occurs when convert struct to map. function: StructToMap() -> json.Marshal()")
 		return m, err
 	}
 	err = json.Unmarshal(j, &m)
 	if err != nil {
-		log.Print("Error occurs when convert struct to map. function: StrctToMap() -> json.Unmarshal()")
+		log.Print("Error occurs when convert struct to map. function: StructToMap() -> json.Unmarshal()")
 		return m, err
 	}
 
@@ -151,9 +163,9 @@ func ToIfKeyMap(m map[string]interface{}) (result map[interface{}]interface{}, e
 // 》interface{}类型Key的Map用于go-flutter插件
 func StructToIfKeyMap(s interface{}) (result map[interface{}]interface{}, err error) {
 	// 先转换成string类型Key的Map
-	m, err := StrctToMap(s)
+	m, err := StructToMap(s)
 	if err != nil {
-		log.Print("Error occurs when convert struct to map with interface key. function: StrctToIfKeyMap() -> StrctToMap()")
+		log.Print("Error occurs when convert struct to map with interface key. function: StrctToIfKeyMap() -> StructToMap()")
 		return result, err
 	}
 

@@ -33,14 +33,31 @@ func IsPartInSlice(slice []string, s string) (isIn bool) {
 
 	isIn = false
 	for _, part := range slice {
-
-		if strings.Index(s, part) >= 0 {
+		if strings.Contains(s, part) {
 			isIn = true
 			break
 		}
 	}
 
 	return isIn
+}
+
+// 判断目标字符串是否包含在切片的某个元素中
+func Contains(slice []string, s string) (result bool) {
+
+	if len(slice) == 0 {
+		return false
+	}
+
+	result = false
+	for _, v := range slice {
+		if strings.Contains(v, s) {
+			result = true
+			break
+		}
+	}
+
+	return result
 }
 
 // 判断目标字符串部分是否包含切片中所有项目
@@ -139,9 +156,13 @@ func IsAllEmpty(slice []string) (isEmpty bool) {
 func StringSliceToByte(s []string) []byte {
 	var buffer bytes.Buffer
 
-	for _, v := range s {
+	l := len(s)
+	for i, v := range s {
 		buffer.WriteString(v)
-		buffer.WriteString("\n")
+
+		if i < l-1 {
+			buffer.WriteString("\n")
+		}
 	}
 
 	return buffer.Bytes()
