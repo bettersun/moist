@@ -40,8 +40,8 @@ import (
 		log.Println(err)
 	}
 
-	log.Println(result)
-	log.Println(result.Name)
+	log.Println(config)
+	log.Println(config.Name)
 ```
 
 #### YAML文件内容为数组
@@ -99,5 +99,5 @@ import (
 	}
 
 	log.Println(config)
-	log.Println(result.Name)
+	log.Println(config.Name)
 ```
