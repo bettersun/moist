@@ -16,35 +16,41 @@ func Now(format string) string {
 func NowYmdHms() string {
 
 	//
-	return time.Now().Format(DateTimeFormatYmdHms)
+	return time.Now().Format(DTFmtYmdHms)
+}
+
+func NowMdHms() string {
+
+	//
+	return time.Now().Format(DTFmtMdHms)
 }
 
 func NowYmdHmsHyphen() string {
 
 	//
-	return time.Now().Format(DateTimeFormatYmdHmsHyphen)
+	return time.Now().Format(DTFmtYmdHmsHyphen)
 }
 
 func NowYmdHmsSlash() string {
 
 	//
-	return time.Now().Format(DateTimeFormatYmdHmsSlash)
+	return time.Now().Format(DTFmtYmdHmsSlash)
 }
 
 func TodayYmd() string {
 
 	//
-	return time.Now().Format(DateFormatYmd)
+	return time.Now().Format(DFmtYmd)
 }
 
 func TodayYmdHyphen() string {
 
 	//
-	return time.Now().Format(DateFormatYmdHyphen)
+	return time.Now().Format(DFmtYmdHyphen)
 }
 
 func TodayYmdSlash() string {
 
 	//
-	return time.Now().Format(DateFormatYmdSlash)
+	return time.Now().Format(DFmtYmdSlash)
 }

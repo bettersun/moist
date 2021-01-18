@@ -98,7 +98,6 @@ func StructToMap(s interface{}) (map[string]interface{}, error) {
 // 将string类型Key的Map转化为interface{}类型Key的Map
 // 》interface{}类型Key的Map用于go-flutter插件
 func ToIfKeyMap(m map[string]interface{}) (result map[interface{}]interface{}, err error) {
-
 	result = make(map[interface{}]interface{})
 	for k, v := range m {
 		kindTmp := reflect.ValueOf(v).Kind()
@@ -113,7 +112,6 @@ func ToIfKeyMap(m map[string]interface{}) (result map[interface{}]interface{}, e
 			// 用于存放Map的切片
 			var valSlice []interface{}
 			for _, subVal := range vSlice {
-
 				// 切片元素为Map类型
 				if reflect.ValueOf(subVal).Kind() == reflect.Map {
 					itemMap, itemOk := subVal.(map[string]interface{})
@@ -133,26 +131,67 @@ func ToIfKeyMap(m map[string]interface{}) (result map[interface{}]interface{}, e
 
 			result[k] = valSlice
 		} else if kindTmp == reflect.Map {
-
 			tmpMap := make(map[interface{}]interface{})
 
 			for k2, v2 := range v.(map[string]interface{}) {
 				tmpMap[k2] = v2
 			}
 
-			// bTmp, err := json.Marshal(v)
-			// if err != nil {
-			// 	log.Println(err)
-			// }
-
-			// sTmp := string(bTmp)
-
-			// tmp, err := JsonToMap(sTmp)
-
-			// toMap(tmp, tmpMap)
 			result[k] = tmpMap
 		} else {
 			result[k] = v
+		}
+	}
+
+	return result, nil
+}
+
+// 将interface{}类型Key的Map转化为string类型Key的Map
+// 》interface{}类型Key的Map用于go-flutter插件
+func ToStringKeyMap(m map[interface{}]interface{}) (result map[string]interface{}, err error) {
+	result = make(map[string]interface{})
+	for k, v := range m {
+		kindTmp := reflect.ValueOf(v).Kind()
+
+		if kindTmp == reflect.Slice {
+			vSlice, ok := v.([]interface{})
+
+			if !ok {
+				return result, errors.New("Error occurs when reflect slice.")
+			}
+
+			// 用于存放Map的切片
+			var valSlice []interface{}
+			for _, subVal := range vSlice {
+				// 切片元素为Map类型
+				if reflect.ValueOf(subVal).Kind() == reflect.Map {
+					itemMap, itemOk := subVal.(map[interface{}]interface{})
+					if itemOk {
+						ifKeyMap, err := ToStringKeyMap(itemMap)
+
+						if err != nil {
+							return nil, err
+						}
+
+						valSlice = append(valSlice, ifKeyMap)
+					}
+
+				} else { // 非Map类型（认为是普通类型）
+					valSlice = append(valSlice, subVal)
+				}
+			}
+
+			result[k.(string)] = valSlice
+		} else if kindTmp == reflect.Map {
+			tmpMap := make(map[string]interface{})
+
+			for k2, v2 := range v.(map[interface{}]interface{}) {
+				tmpMap[k2.(string)] = v2
+			}
+
+			result[k.(string)] = tmpMap
+		} else {
+			result[k.(string)] = v
 		}
 	}
 
@@ -179,18 +218,18 @@ func StructToIfKeyMap(s interface{}) (result map[interface{}]interface{}, err er
 	return result, nil
 }
 
-/// JSON文件转struct
+/// JSON文件内容转struct
 ///  file: json文件
 ///  s   : 定义的struct的地址(调用处需要加&)
 ///
 /// 使用例：参照README.md
-func JsonFileToStruct(file string, s interface{}) (interface{}, error) {
+func JsonFileToStruct(file string, s interface{}) error {
 
 	// 读取文件
 	b, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Print(err)
-		return s, err
+		return err
 	}
 
 	// 转换成Struct
@@ -199,7 +238,29 @@ func JsonFileToStruct(file string, s interface{}) (interface{}, error) {
 		log.Printf("Get the setting error! %v\n", err.Error())
 	}
 
-	return s, nil
+	return nil
+}
+
+/// map转struct(map->json->struct)
+///  file: json文件
+///  s   : 定义的struct的地址(调用处需要加&)
+///
+func MapToStruct(m map[string]interface{}, s interface{}) error {
+	// map 转换为 JSON 字节
+	bJson, err := json.Marshal(m)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	// 转换成Struct
+	err = json.Unmarshal(bJson, s)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return err
 }
 
 // func ToMap(tests []interface) {

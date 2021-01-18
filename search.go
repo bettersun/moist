@@ -346,7 +346,7 @@ func searchRecursive(result *SearchResult, path string, option *SearchOption) {
 					// 文件模式
 					fInfo.Mode = f.Mode()
 					// 最终修改时间
-					fInfo.ModTime = f.ModTime().Format(DateTimeFormatYmdHmsSlash)
+					fInfo.ModTime = f.ModTime().Format(DTFmtYmdHmsSlash)
 					//					fInfo.SysInfo = f.Sys()
 					result.FileInfo = append(result.FileInfo, fInfo)
 				}

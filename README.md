@@ -35,13 +35,13 @@ import (
 	file := "config.yml"
 
 	var config Config
-	result, err := yml.YamlFileToStruct(file, &config)
+	err := yml.YamlFileToStruct(file, &config)
 	if err != nil {
 		log.Println(err)
 	}
 
 	log.Println(result)
-	log.Println(result.(*Config).Name)
+	log.Println(result.Name)
 ```
 
 #### YAML文件内容为数组
@@ -58,14 +58,13 @@ config.yml
 	file := "config.yml"
 
 	var config Config
-	result, err := yml.YamlFileToStruct(file, &config)
+	err := yml.YamlFileToStruct(file, &config)
 	if err != nil {
 		log.Println(err)
 	}
 
-	log.Println(result.(*[]Config))
-	log.Println(*(result.(*[]Config)))
-	for _, v := range *(result.(*[]Config)) {
+	log.Println(config)
+	for _, v := range config {
 		log.Println(v.Name)
 	}
 ```
@@ -94,11 +93,11 @@ import (
 	file := "config.json"
 
 	var config Config
-	result, err := moist.JsonFileToStruct(file, &config)
+	err := moist.JsonFileToStruct(file, &config)
 	if err != nil {
 		log.Println(err)
 	}
 
-	log.Println(result)
-	log.Println(result.(*Config).Name)
+	log.Println(config)
+	log.Println(result.Name)
 ```

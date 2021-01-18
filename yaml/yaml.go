@@ -31,13 +31,13 @@ func OutYaml(file string, s interface{}) error {
 ///  s   : 定义的struct的地址(调用处需要加&)
 ///
 /// 使用例：参照README.md
-func YamlFileToStruct(file string, s interface{}) (interface{}, error) {
+func YamlFileToStruct(file string, s interface{}) error {
 
 	// 读取文件
 	b, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Print(err)
-		return s, err
+		return err
 	}
 
 	// 转换成Struct
@@ -46,5 +46,5 @@ func YamlFileToStruct(file string, s interface{}) (interface{}, error) {
 		log.Printf("Get the setting error! %v\n", err.Error())
 	}
 
-	return s, nil
+	return nil
 }

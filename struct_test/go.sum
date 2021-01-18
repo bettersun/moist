@@ -1,0 +1,4 @@
+github.com/bettersun/moist/yaml v0.0.0-20210107114429-ae0556757303 h1:pCmVKTFqJXMFzmrFhDXGit1H0kQZ5N3cm91OvU/iJ0s=
+github.com/bettersun/moist/yaml v0.0.0-20210107114429-ae0556757303/go.mod h1:NQw87BJplca5DWgKRwPfdzfhc+zONvznCdWQ9PTaezk=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
